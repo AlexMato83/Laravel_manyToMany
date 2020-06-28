@@ -19,9 +19,9 @@ class AddForeignKeys extends Migration
               ->references('id')
               ->on('employees')
               ->onDelete('cascade');
-        });
+      });
 
-        Schema::table('employee_location', function (Blueprint $table) {
+      Schema::table('employee_location', function (Blueprint $table) {
 
         $table->foreign('employee_id', 'employeeRefer')
               ->references('id')
@@ -32,7 +32,7 @@ class AddForeignKeys extends Migration
               ->references('id')
               ->on('locations')
               ->onDelete('cascade');
-        });
+      });
 
     }
 
