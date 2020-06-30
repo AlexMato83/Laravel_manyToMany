@@ -1,53 +1,57 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Employee;
 use App\Task;
 use App\Location;
-
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index(){
+  public function index(){
+    $employees = Employee::all();
+    return view('home', compact('employees'));
+  }
 
-      $employees = Employee::all();
-      return view('home', compact('employees'));
+  public function show($id){
+    $employee = Employee::findOrFail($id);
+    return view('show', compact('employee'));
+  }
 
-    }
+  public function edit($id){
+    $employee = Employee::findOrFail($id);
+    $locations = Location::all();
 
-    public function show($id){
+    return view('edit', compact('employee','locations'));
+  }
 
-      $employee = Employee::findOrFail($id);
-      return view('show', compact('employee'));
-    }
 
-    public function edit($id){
+    public function update(Request $request , $id){
 
-      $employee = Employee::findOrFail($id);
-      return view('edit', compact('employee'));
-    }
-
-    public function update(Request $request,$id){
-
-      $validateData = $request -> validate([
-
-        'firstname'=> 'required',
-        'lastname'=> 'required',
-        'dateOfBirth'=> 'required',
-        'role'=> 'required'
+    $validateData = $request -> validate([
+        'firstname' => 'required',
+        'lastname' => 'required',
+        'dateOfBirth' => 'required',
+        'role' => 'required',
+        'locations' => 'required'
       ]);
 
-      Employee::whereId($id)-> update($validateData);
-      return redirect() -> route('home');
-    }
-
-    public function delete($id){
-
       $employee = Employee::findOrFail($id);
-      $employee -> delete();
-      return redirect() -> route('home');
 
-    }
+      $employee->locations()->sync($validateData['locations']);
+
+
+      $employee-> update($validateData);
+
+
+
+    return redirect() -> route('home');
+  }
+
+  public function delete($id){
+    $employee = Employee::findOrFail($id);
+
+    $employee -> delete();
+    return redirect() -> route('home');
+  }
 }

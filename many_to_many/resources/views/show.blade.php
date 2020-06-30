@@ -1,21 +1,34 @@
 @extends('layouts.main_layout')
 
 @section('main')
-  <div class="">
-    <h1>IMPIEGATO: </h1>
-    <span>Nome: {{$employee['firstname']}}{{$employee['lastname']}}</span><br>
-    <span>Data di nascita: {{$employee['dateOfBirth']}}</span><br>
-    <span>Ruolo: {{$employee['role']}}</span><br>
-    <a href="{{route('edit', $employee['id'])}}">MODIFICA IMPIEGATO</a>
-    <a href="{{route('delete', $employee['id'])}}">CANCELLA IMPIEGATO</a>
-    <h1>TASKS:</h1>
+  <div class="show">
+    <h2>IMPIEGATO: </h2><br>
+    <div class="show_impiegato">
+      <span>Nome: <h3>{{$employee['firstname']}} {{$employee['lastname']}}</h3></span><br>
+      <span>Data di nascita: <b>{{$employee['dateOfBirth']}}</b></span><br>
+      <span>Ruolo: <b>{{$employee['role']}}</b></span><br>
+      <a href="{{route('edit', $employee['id'])}}">MODIFICA IMPIEGATO</a><br>
+      <a href="{{route('delete', $employee['id'])}}">CANCELLA IMPIEGATO</a><br>
+    </div>
+
+    <h3>ATTIVITA':</h3>
     <ul>
-      @foreach ($employee -> tasks as $task)
-        <li>{{$task['name']}}</li>
-        <li>{{$task['description']}}</li>
-        <li>{{$task['deadline']}}</li><br>
+      @foreach ($employee -> tasks as $key => $task)
+        <h4>Attività {{$key + 1}}:</h4>
+        <li>Nome: {{$task['name']}}</li>
+        <li>Descrizione: {{$task['description']}}</li>
+        <li>Scadenza: {{$task['deadline']}}</li><br>
+        <hr>
       @endforeach
     </ul>
+
+    <h3>Luoghi:</h3>
+    <ul>
+      @foreach ($employee -> locations as $location)
+        <li>{{$location['city']}}</li>
+      @endforeach
+    </ul>
+
 
   </div>
 
